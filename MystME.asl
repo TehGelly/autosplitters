@@ -78,7 +78,7 @@ split{
 	}
 	
 	if(settings["tr"]){
-		if(old.isFading==0 && current.isFading == 1){
+		if((old.isFading == 0 || old.isFading == 65537) && current.isFading == 1){
 			if(settings["fe"]){
 				if(vars.firstEntry == 0){
 					//should only work once
@@ -129,7 +129,7 @@ split{
 }
 
 start{
-	if(old.isFading==0 && current.isFading == 1){
+	if((old.isFading == 0 || old.isFading == 65537) && current.isFading == 1){
 		vars.firstEntry = 0;
 		return true;
 	}
