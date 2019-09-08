@@ -1,13 +1,19 @@
 state("scummvm", "GOG"){
 	int heldPage: "scummvm.exe", 0x004ED32C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x004ED32C, 0x74, 0x4;
+	int clockBridge: "scummvm.exe", 0x004ED32C, 0x74, 0x48;
+	int sortaCard: "scummvm.exe", 0x004ED32C, 0xB4, 0x10;
 	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
+	byte32 markerSwitches: "scummvm.exe", 0x004ED32C, 0x74, 0x1C;
 }
-//
+
 state("scummvm", "Steam/DVD"){
 	int heldPage: "scummvm.exe", 0x0052C34C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x0052C34C, 0x74, 0x4;
+	int clockBridge: "scummvm.exe", 0x0052C34C, 0x74, 0x48;
+	int sortaCard: "scummvm.exe", 0x0052C34C, 0xB4, 0x10;
 	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
+	byte32 markerSwitches: "scummvm.exe", 0x0052C34C, 0x74, 0x1C;
 }
 
 init{
@@ -34,10 +40,17 @@ init{
 	
 	//also this
 	vars.firstEntry = 0;
+	vars.firstFireplace = 0;
+	vars.markerSwitchManager = 123;
+	vars.markerSwitchManager = 0;
 }
 
 startup{
 	settings.Add("pages",true,"Split on handing in all non-library pages.");
+	settings.Add("any",false,"Any% splits");
+	settings.Add("fireplace",false,"Split on closing of the fireplace.","any");
+	settings.Add("clockbridge",false,"Split on raising of the clocktower bridge.","any");
+	settings.Add("switches",false,"Split on every marker switch being flipped.","any");
 	settings.Add("libpages",false,"Include library pages.", "pages");
 	settings.Add("tr",true,"Split on entry and exit of every Age");
 	settings.Add("fe", true, "Split on only first entry to any Age.","tr");
@@ -78,6 +91,36 @@ split{
 				return true;
 			}else{
 				return true;
+			}
+		}
+	}
+	
+	if(settings["any"]){
+		
+		if(settings["fireplace"]){
+			//sortacard is unreliable for anything except telling you
+			//"yeah we're in the fireplace"
+			//that's why we need a bool guard
+			if(vars.firstFireplace == 0 && current.sortaCard == 4162){
+				vars.firstFireplace = 1;
+				return true;
+			}
+		}	
+	
+		if(settings["clockbridge"]){
+			if(old.clockBridge == 0 && current.clockBridge == 1){
+				return true;
+			}
+		}
+	
+		if(settings["switches"]){
+			//this is the only time i've managed to be sorta clever
+			//marker switch flip state is stored in an int
+			for(int i = 0; i < 8; i++){
+				if(((vars.markerSwitchManager&(1<<i))==0) && current.markerSwitches[4*i]==1){
+					vars.markerSwitchManager |= (1<<i);
+					return true;
+				}	
 			}
 		}
 	}
