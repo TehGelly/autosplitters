@@ -1,7 +1,4 @@
-state("TheSwapper"){
-	//TODO: find a valid x velocity pointer
-	float xvel: "swapper.exe", 0x099345, 0x0, 0xB4D;
-}
+state("TheSwapper"){}
 
 //this asl takes heavy influence from the talos script
 //thanks, darkid
@@ -34,8 +31,12 @@ init{
 			string[] fileList = Directory.GetFiles(logPath);
 			foreach(string filename in fileList){
 				int length = filename.Length;
+				string commonsettingsini = filename.Substring(length-18);
+				string defaultini = filename.Substring(length-11);
 				string ext = filename.Substring(length-3);
-				if(string.Compare( ext , "ini" )==0){
+				if(string.Compare( ext , "ini" )==0 
+				&& string.Compare(defaultini , "Default.ini") != 0
+				&& string.Compare(commonsettingsini, "CommonSettings.ini") != 0){
 					logPath = filename;
 					break;
 				}
@@ -43,38 +44,64 @@ init{
 			break;
 		}
 	}
-	vars.reader = new StreamReader(new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+	vars.reader = null;
+	try{
+		vars.reader = new StreamReader(new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+	}catch{
+		//bummer
+		print("Invalid file, sorry.");
+	}
 	vars.eventCount = 0;
+	vars.startDelay = 0;
 }
 
 start{
-	//rewind to file beginning every time
-	vars.reader.DiscardBufferedData();
-	vars.reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-	var newEventCount = Int32.Parse(vars.reader.ReadLine());
-	if(newEventCount == 7){
-		return true;
+	if(vars.reader != null){
+		//rewind to file beginning every time
+		vars.reader.DiscardBufferedData();
+		vars.reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+		var newEventCount = Int32.Parse(vars.reader.ReadLine());
+		
+		if(newEventCount == 7){
+			//1666 frames from progress to beginning
+			if(vars.startDelay == 1706){
+				vars.startDelay = 0;
+				return true;
+			}else{
+				vars.startDelay++;
+			}
+		}
 	}
 	return false;
 }
 
+exit{
+	vars.reader = null;
+}
+
 split{
-	//rewind to file beginning every time
-	vars.reader.DiscardBufferedData();
-	vars.reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-	var newEventCount = Int32.Parse(vars.reader.ReadLine());
-	if(newEventCount > vars.eventCount){
-		vars.eventCount = newEventCount;
-		//now we run through the next eventcount amount of lines
-		for(int i = 0; i < newEventCount; i++){
-			var line = vars.reader.ReadLine();
-			if(vars.consoleList.ContainsKey(line)){
-				if(!vars.consoleList[line]){
-					vars.consoleList[line] = true;
-					return true;
+	//just in case
+	vars.startDelay = 0;
+	
+	if(vars.reader != null){
+		//rewind to file beginning every time
+		vars.reader.DiscardBufferedData();
+		vars.reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+		var newEventCount = Int32.Parse(vars.reader.ReadLine());
+		
+		if(newEventCount > vars.eventCount){
+			vars.eventCount = newEventCount;
+			//now we run through the next eventcount amount of lines
+			for(int i = 0; i < newEventCount; i++){
+				var line = vars.reader.ReadLine();
+				if(vars.consoleList.ContainsKey(line)){
+					if(!vars.consoleList[line]){
+						vars.consoleList[line] = true;
+						return true;
+					}
+				}else{
+					print("oops" + line);
 				}
-			}else{
-				print("oops" + line);
 			}
 		}
 	}
