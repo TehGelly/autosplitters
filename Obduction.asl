@@ -22,6 +22,12 @@ state("Obduction-Win64-Shipping", "Steam 1.0")
 	int ID : "Obduction-Win64-Shipping.exe", 0x027A5310;
 }
 
+state("Obduction-Win64-Shipping", "Steam 1.8.1")
+{
+	//value is 2 when loading anything, 1 when not
+	int isLoading : "Obduction-Win64-Shipping.exe", 0x0312DA48, 0x70, 0x80, 0xC0, 0x18, 0x10, 0x60, 0x8;
+}
+
 init{
 	//i robbed this md5 code from CptBrian's RotN autosplitter
 	//shoutouts to him
