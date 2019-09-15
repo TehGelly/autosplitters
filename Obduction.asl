@@ -51,9 +51,13 @@ init{
 	}else if(MD5Hash == "FC437547668B2CEE3F19EBF8E25983A8"){
 		print("Version is 1.7.0, GOG.");
 		version = "GOG 1.7.0";
+	}else if(MD5Hash == "ABD391AFBE1AE14B710084844CE7CFA1"){
+		print("Version is 1.8.1, Steam.");
+		version = "Steam 1.8.1";
 	}else{
-		print("Version not implemented. Defaulting to Steam 1.7.0");
-		version = "Steam 1.7.0";
+		print(MD5Hash);
+		print("Version not implemented.");
+		version = "Unknown Version";
 	}
 }
 
