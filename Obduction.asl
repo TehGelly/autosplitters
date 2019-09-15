@@ -28,6 +28,12 @@ state("Obduction-Win64-Shipping", "Steam 1.8.1")
 	int isLoading : "Obduction-Win64-Shipping.exe", 0x0312DA48, 0x70, 0x80, 0xC0, 0x18, 0x10, 0x60, 0x8;
 }
 
+state("Obduction-Win64-Shipping", "GOG 1.8.1")
+{
+	//value is 2 when loading anything, 1 when not
+	int isLoading : "Obduction-Win64-Shipping.exe", 0x0318EBC8, 0x70, 0x80, 0xC0, 0x18, 0x10, 0x60, 0x8;
+}
+
 init{
 	//i robbed this md5 code from CptBrian's RotN autosplitter
 	//shoutouts to him
@@ -54,6 +60,9 @@ init{
 	}else if(MD5Hash == "ABD391AFBE1AE14B710084844CE7CFA1"){
 		print("Version is 1.8.1, Steam.");
 		version = "Steam 1.8.1";
+	}else if(MD5Hash == "99DC6EFA852097910A7A7ABB9D1FC5F5")
+		print("Version is 1.8.1, GOG.");
+		version = "GOG 1.8.1";
 	}else{
 		print(MD5Hash);
 		print("Version not implemented.");
