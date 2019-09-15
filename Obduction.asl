@@ -60,7 +60,7 @@ init{
 	}else if(MD5Hash == "ABD391AFBE1AE14B710084844CE7CFA1"){
 		print("Version is 1.8.1, Steam.");
 		version = "Steam 1.8.1";
-	}else if(MD5Hash == "99DC6EFA852097910A7A7ABB9D1FC5F5")
+	}else if(MD5Hash == "99DC6EFA852097910A7A7ABB9D1FC5F5"){
 		print("Version is 1.8.1, GOG.");
 		version = "GOG 1.8.1";
 	}else{
