@@ -23,3 +23,8 @@ Adding all of my autosplitter work into one repo to clean up github
 -Splits based on time for the initial split.  
 -Splits based on save file for the console splits.  
 -TODO: Find position pointer for final split and non-time-based initial split  
+
+## INSIDE  
+-Splits mostly based on positions dictated with the help of parhelion.  
+-Splits based on cycle for the sub and mine splits, as time can only be gained in increments of 6 seconds during that section.  
+-TODO: Look into moving the sub split 6 seconds back to line up better with the physical gubbins on the screen.
