@@ -37,13 +37,13 @@ state("Obduction-Win64-Shipping", "GOG 1.8.1")
 state("Obduction-Win64-Shipping", "Steam 1.8.4")
 {
 	//value is 2 when loading anything, 1 when not
-	int isLoading : "Obduction-Win64-Shipping.exe", 0x0312D268, 0x70, 0x80, 0xC0, 0x18, 0x10, 0x60, 0x8;
+	int isLoading : "Obduction-Win64-Shipping.exe", 0x0312D268, 0x70, 0x80, 0x20, 0x18, 0x10, 0x60, 0x8;
 }
 
 state("Obduction-Win64-Shipping", "GOG 1.8.4")
 {
 	//value is 2 when loading anything, 1 when not
-	int isLoading : "Obduction-Win64-Shipping.exe", 0x318E3E8, 0x70, 0x80, 0xC0, 0x18, 0x10, 0x60, 0x8;
+	int isLoading : "Obduction-Win64-Shipping.exe", 0x318E3E8, 0x70, 0x80, 0x20, 0x18, 0x10, 0x60, 0x8;
 }
 
 init{
