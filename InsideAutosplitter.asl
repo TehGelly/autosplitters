@@ -21,7 +21,7 @@ startup{
 	settings.Add("search",true,"Split when closing the trapdoor under the searchlights.(Search)");
 	settings.Add("dogs",true,"Split when landing on the ledge before the submersible.(Dogs)");
 	settings.Add("sub",true,"Split when closing the door on the watergirl.(Sub)");
-	settings.Add("mine",true,"Split when the box breaks in the shockwave section.(Mine)");
+	settings.Add("mine",false,"Split when the box breaks in the shockwave section.(Mine) UNRELIABLE");
 	settings.Add("clock",true,"Split when landing in the water under the shockwave elevator.(Clock)");
 	settings.Add("breathe",true,"Split when falling from the chain to the intended watergirl drowning.(Breathe)");
 	settings.Add("underwater",true,"Split when diving into the tank after avoiding the searchlight.(Underwater)");
@@ -54,7 +54,7 @@ split{
 				case 0:
 					//forest - cross a line
 					//wide range just in case
-					if(settings["forest"] && current.xval > -35.5 && current.xval < -34.5){
+					if(settings["forest"] && current.xval > -35.5 && current.xval < -33.5){
 						vars.splitList[i] = true;
 						return true;
 					}
@@ -154,7 +154,8 @@ split{
 					break;
 				case 14:
 					//inside - going up lmfao
-					if(settings["inside"] && current.xval < 3635.5 && current.xval > 3631 && current.yval > -806){
+					if(settings["inside"] && current.xval < 3635.5 && current.xval > 3631 && 
+								 current.yval > -806   && current.yval < -810 ){
 						vars.splitList[i] = true;
 						return true;
 					}
