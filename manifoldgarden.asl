@@ -1,4 +1,5 @@
 state("ManifoldGarden"){
+	//much credit to preshing for working out the kinks in the previous version to make it work
 	// This pointer path works with:
 	// Manifold Garden 1.0.29.12830 (Dec. 18, 2019)
 	// Manifold Garden 1.0.29.12781 (Dec. 11, 2019)
