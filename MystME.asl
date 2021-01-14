@@ -4,7 +4,6 @@ state("scummvm", "GOG") {
 	int heldPage: "scummvm.exe", 0x004ED32C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x004ED32C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x004ED32C, 0x74, 0x48;
-	int sortaCard: "scummvm.exe", 0x004ED32C, 0xB4, 0x10;
 	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
 	byte32 markerSwitches: "scummvm.exe", 0x004ED32C, 0x74, 0x1C;
 }
@@ -15,7 +14,6 @@ state("scummvm", "Steam/DVD") {
 	int heldPage: "scummvm.exe", 0x0052C34C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x0052C34C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x0052C34C, 0x74, 0x48;
-	int sortaCard: "scummvm.exe", 0x0052C34C, 0xB4, 0x10;
 	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
 	byte32 markerSwitches: "scummvm.exe", 0x0052C34C, 0x74, 0x1C;
 }
@@ -42,7 +40,6 @@ init {
 	
 	//also this
 	vars.firstEntry = 0;
-	vars.firstFireplace = 0;
 	vars.markerSwitchManager = 123;
 	vars.markerSwitchManager = 0;
 }
@@ -90,14 +87,8 @@ split {
 	}
 	
 	if (settings["any"]) {
-		if (settings["fireplace"]) {
-			//sortacard is unreliable for anything except telling you
-			//"yeah we're in the fireplace"
-			//that's why we need a bool guard
-			if (vars.firstFireplace == 0 && current.sortaCard == 4162) {
-				vars.firstFireplace = 1;
-				return true;
-			}
+		if (settings["fireplace"] && old.cardID != 4162 && current.cardID == 4162) {
+			return true;
 		}	
 	
 		if (settings["clockbridge"]) {
