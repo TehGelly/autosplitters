@@ -4,7 +4,6 @@ state("scummvm", "GOG") {
 	int heldPage: "scummvm.exe", 0x004ED32C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x004ED32C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x004ED32C, 0x74, 0x48;
-	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
 	byte32 markerSwitches: "scummvm.exe", 0x004ED32C, 0x74, 0x1C;
 }
 
@@ -14,7 +13,6 @@ state("scummvm", "Steam/DVD") {
 	int heldPage: "scummvm.exe", 0x0052C34C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x0052C34C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x0052C34C, 0x74, 0x48;
-	int isFading: "SDL2.dll", 0x000F26DC, 0x0;
 	byte32 markerSwitches: "scummvm.exe", 0x0052C34C, 0x74, 0x1C;
 }
 
@@ -67,16 +65,10 @@ split {
 	}
 	
 	if (settings["link"]) {
-		if ((old.isFading == 0 || old.isFading == 65537) && current.isFading == 1) {
-			if (settings["firstLink"]) {
-				if (vars.firstLink == 0) {
-					//should only work once
-					vars.firstLink = 1;
-					return true;
-				}
-			} else if (settings["returnToMyst"] && current.age != 2) {
-				return true;
-			} else {
+		// Age transition, excluding menu; we only check transitions *to* K'veer since runs will always end there
+		if (old.age !== current.age && old.age <= 4 && current.age <= 6 && current.age !== 5) {
+			if (vars.firstLink == 0 && (!settings["returnToMyst"] || current.age == 2)) {
+				if (settings["firstLink"]) vars.firstLink = 1;
 				return true;
 			}
 		}
