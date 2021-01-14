@@ -39,7 +39,7 @@ init {
 	}
 	
 	//also this
-	vars.firstEntry = 0;
+	vars.firstLink = 0;
 	vars.markerSwitchManager = 0;
 }
 
@@ -50,14 +50,14 @@ startup {
 	settings.Add("fireplace", false, "Split on closing of the fireplace.", "any");
 	settings.Add("clockbridge", false, "Split on raising of the clocktower bridge.", "any");
 	settings.Add("switches", false, "Split on every marker switch being flipped.", "any");
-	settings.Add("tr", true, "Split on entry and exit of every Age");
-	settings.Add("fe", true, "Split on only first entry to any Age.", "tr");
-	settings.Add("exit", false, "Split on exit of every non-Myst Age.", "tr");
+	settings.Add("link", true, "Split when linking to another Age.");
+	settings.Add("firstLink", true, "...but only the very first.", "link");
+	settings.Add("returnToMyst", false, "...but only when linking back to Myst Island.", "link");
 }
 
 split {
 	if (settings["pages"]) {
-		// Held page changed on Myst, didn't drop white page
+		// Held page changed on Myst Island, didn't drop white page
 		if (current.age == 2 && old.heldPage != 0 && old.heldPage != 13 && current.heldPage == 0) {
 			// Skip the library pages if user doesn't want to split for them
 			if (settings["libpages"] || (old.heldPage != 1 && old.heldPage != 7)) {
@@ -66,15 +66,15 @@ split {
 		}
 	}
 	
-	if (settings["tr"]) {
+	if (settings["link"]) {
 		if ((old.isFading == 0 || old.isFading == 65537) && current.isFading == 1) {
-			if (settings["fe"]) {
-				if (vars.firstEntry == 0) {
+			if (settings["firstLink"]) {
+				if (vars.firstLink == 0) {
 					//should only work once
-					vars.firstEntry = 1;
+					vars.firstLink = 1;
 					return true;
 				}
-			} else if (settings["exit"] && current.age != 2) {
+			} else if (settings["returnToMyst"] && current.age != 2) {
 				return true;
 			} else {
 				return true;
@@ -96,7 +96,7 @@ split {
 			//marker switch flip state is stored in an int
 			for (int i = 0; i < 8; i++) {
 				if (((vars.markerSwitchManager & (1 << i)) == 0) && current.markerSwitches[4 * i] == 1) {
-					vars.markerSwitchManager |= (1<<i);
+					vars.markerSwitchManager |= (1 << i);
 					return true;
 				}	
 			}
@@ -111,7 +111,7 @@ split {
 
 start {
 	if (current.cardID == 5 && old.sfxID == 0 && current.sfxID == 5) {
-		vars.firstEntry = 0;
+		vars.firstLink = 0;
 		vars.markerSwitchManager = 0;
 		return true;
 	}
