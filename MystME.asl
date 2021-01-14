@@ -75,8 +75,6 @@ split {
 					//should only work once
 					vars.firstEntry = 1;
 					return true;
-				} else {
-					return false;
 				}
 			} else if (settings["exit"] && current.age != 2) {
 				return true;
@@ -113,8 +111,6 @@ split {
 	if (old.heldPage == 13 && current.heldPage == 0 && current.age == 6) {
 		return true;
 	}
-	
-	return false;
 }
 
 start {
