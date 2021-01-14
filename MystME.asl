@@ -1,4 +1,5 @@
-state("scummvm", "GOG"){
+	ushort cardID: "scummvm.exe", 0x004ED32C, 0xB4, 0x10;
+	ushort sfxID: "scummvm.exe", 0x004ED32C, 0x6C, 0xC;
 	int heldPage: "scummvm.exe", 0x004ED32C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x004ED32C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x004ED32C, 0x74, 0x48;
@@ -7,7 +8,8 @@ state("scummvm", "GOG"){
 	byte32 markerSwitches: "scummvm.exe", 0x004ED32C, 0x74, 0x1C;
 }
 
-state("scummvm", "Steam/DVD"){
+	ushort cardID: "scummvm.exe", 0x0052C34C, 0xB4, 0x10;
+	ushort sfxID: "scummvm.exe", 0x0052C34C, 0x6C, 0xC;
 	int heldPage: "scummvm.exe", 0x0052C34C, 0x74, 0x8;
 	int age: "scummvm.exe", 0x0052C34C, 0x74, 0x4;
 	int clockBridge: "scummvm.exe", 0x0052C34C, 0x74, 0x48;
@@ -129,7 +131,7 @@ split{
 }
 
 start{
-	if((old.isFading == 0 || old.isFading == 65537) && current.isFading == 1){
+	if (current.cardID == 5 && old.sfxID == 0 && current.sfxID == 5) {
 		vars.firstEntry = 0;
 		return true;
 	}
