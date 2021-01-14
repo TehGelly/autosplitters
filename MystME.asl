@@ -40,7 +40,6 @@ init {
 	
 	//also this
 	vars.firstEntry = 0;
-	vars.markerSwitchManager = 123;
 	vars.markerSwitchManager = 0;
 }
 
@@ -58,13 +57,12 @@ startup {
 
 split {
 	if (settings["pages"]) {
-		// We want to skip pages 0, 1, 7, and 13 in Myst library
-		if (old.heldPage != 0 && old.heldPage % 6 != 1 && current.heldPage == 0 && current.age == 2) {
-			return true;
-		}
-		
-		if (settings["libpages"] && (old.heldPage == 1 || old.heldPage == 7) && current.heldPage == 0 && current.age == 2) {
-			return true;
+		// Held page changed on Myst, didn't drop white page
+		if (current.age == 2 && old.heldPage != 0 && old.heldPage != 13 && current.heldPage == 0) {
+			// Skip the library pages if user doesn't want to split for them
+			if (settings["libpages"] || (old.heldPage != 1 && old.heldPage != 7)) {
+				return true;
+			}
 		}
 	}
 	
@@ -89,10 +87,8 @@ split {
 			return true;
 		}	
 	
-		if (settings["clockbridge"]) {
-			if (old.clockBridge == 0 && current.clockBridge == 1) {
-				return true;
-			}
+		if (settings["clockbridge"] && old.clockBridge == 0 && current.clockBridge == 1) {
+			return true;
 		}
 	
 		if (settings["switches"]) {
@@ -116,6 +112,7 @@ split {
 start {
 	if (current.cardID == 5 && old.sfxID == 0 && current.sfxID == 5) {
 		vars.firstEntry = 0;
+		vars.markerSwitchManager = 0;
 		return true;
 	}
 }
