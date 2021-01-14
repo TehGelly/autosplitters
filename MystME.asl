@@ -83,7 +83,7 @@ split {
 	}
 	
 	if (settings["any"]) {
-		if (settings["fireplace"] && old.cardID != 4162 && current.cardID == 4162) {
+		if (settings["fireplace"] && current.age == 2 && old.cardID != 4162 && current.cardID == 4162) {
 			return true;
 		}	
 	
