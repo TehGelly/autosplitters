@@ -66,11 +66,6 @@ split {
 			return true;
 		}
 		
-		// We want to lose 13 in K'veer
-		if (old.heldPage == 13 && current.heldPage == 0 && current.age == 6) {
-			return true;
-		}
-		
 		if (settings["libpages"] && (old.heldPage == 1 || old.heldPage == 7) && current.heldPage == 0 && current.age == 2) {
 			return true;
 		}
@@ -121,6 +116,11 @@ split {
 				}	
 			}
 		}
+	}
+		
+	// Always split upon handing in white page in K'veer
+	if (old.heldPage == 13 && current.heldPage == 0 && current.age == 6) {
+		return true;
 	}
 	
 	return false;
