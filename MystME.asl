@@ -66,7 +66,7 @@ split {
 	
 	if (settings["link"]) {
 		// Age transition, excluding menu; we only check transitions *to* K'veer since runs will always end there
-		if (old.age !== current.age && old.age <= 4 && current.age <= 6 && current.age !== 5) {
+		if (old.age != current.age && old.age <= 4 && current.age <= 6 && current.age != 5) {
 			if (vars.firstLink == 0 && (!settings["returnToMyst"] || current.age == 2)) {
 				if (settings["firstLink"]) vars.firstLink = 1;
 				return true;
