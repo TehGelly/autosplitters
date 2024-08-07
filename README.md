@@ -1,6 +1,6 @@
 # autosplitters
 Adding all of my autosplitter work into one repo to clean up github  
-this is not a collaborative project, i will not accept prs.
+if you want to fix any of these ASLs, be my guest - provided you aren't whack about it.
 
 ## realMyst: Masterpiece Edition
 -Splits on page hand in, as well as automatic load removal  
