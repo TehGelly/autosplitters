@@ -50,6 +50,7 @@ init {
 	
 	//also this
 	vars.firstLink = 0;
+	vars.enteredFireplace = 0;
 	vars.markerSwitchManager = 0;
 }
 
@@ -87,7 +88,8 @@ split {
 	}
 	
 	if (settings["any"]) {
-		if (settings["fireplace"] && current.age == 2 && old.cardID != 4162 && old.cardID != 1000 && current.cardID == 4162) {
+		if (settings["fireplace"] && current.age == 2 && old.cardID != 4162 && current.cardID == 4162 && vars.enteredFireplace == 0) {
+			vars.enteredFireplace = 1;
 			return true;
 		}	
 	
@@ -116,6 +118,7 @@ split {
 start {
 	if (current.cardID == 5 && old.sfxID == 0 && current.sfxID == 5) {
 		vars.firstLink = 0;
+		vars.enteredFireplace = 0;
 		vars.markerSwitchManager = 0;
 		return true;
 	}
