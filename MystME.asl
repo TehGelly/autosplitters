@@ -16,6 +16,15 @@ state("scummvm", "Steam/DVD") {
 	byte32 markerSwitches: "scummvm.exe", 0x0052C34C, 0x74, 0x1C;
 }
 
+state("scummvm", "Steam 64-bit") {
+	ushort cardID:         "scummvm.exe", 0x00FE1AA0, 0x128, 0x18;
+	ushort sfxID:          "scummvm.exe", 0x00FE1AA0, 0xD0,  0x10;
+	int heldPage:          "scummvm.exe", 0x00FE1AA0, 0xE0,  0x8;
+	int age:               "scummvm.exe", 0x00FE1AA0, 0xE0,  0x4;
+	int clockBridge:       "scummvm.exe", 0x00FE1AA0, 0xE0,  0x48;
+	byte32 markerSwitches: "scummvm.exe", 0x00FE1AA0, 0xE0,  0x1C;
+}
+
 init {
 	//i robbed this md5 code from CptBrian's RotN autosplitter
 	//shoutouts to him
@@ -34,10 +43,14 @@ init {
 	} else if (MD5Hash == "C67ADFE717BE09C7FFDBB8D71F150110") {
 		print("Steam/DVD Version.");
 		version = "Steam/DVD";
+	} else if (MD5Hash == "7BC309C89EFB0CA1D53853BA06106CB1") {
+		print("Steam 64-bit Version.");
+		version = "Steam 64-bit";
 	}
 	
 	//also this
 	vars.firstLink = 0;
+	vars.enteredFireplace = 0;
 	vars.markerSwitchManager = 0;
 }
 
@@ -75,7 +88,8 @@ split {
 	}
 	
 	if (settings["any"]) {
-		if (settings["fireplace"] && current.age == 2 && old.cardID != 4162 && current.cardID == 4162) {
+		if (settings["fireplace"] && current.age == 2 && old.cardID != 4162 && current.cardID == 4162 && vars.enteredFireplace == 0) {
+			vars.enteredFireplace = 1;
 			return true;
 		}	
 	
@@ -104,6 +118,7 @@ split {
 start {
 	if (current.cardID == 5 && old.sfxID == 0 && current.sfxID == 5) {
 		vars.firstLink = 0;
+		vars.enteredFireplace = 0;
 		vars.markerSwitchManager = 0;
 		return true;
 	}
